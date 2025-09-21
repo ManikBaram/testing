@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Test Attendance</title>
+</head>
+<body>
+  <h2>Test Form</h2>
+  <form id="attendanceForm">
+    <input type="text" name="name" placeholder="Name" required><br><br>
+    <input type="date" name="date" required><br><br>
+    <select name="attendance">
+      <option value="Present">Present</option>
+      <option value="Absent">Absent</option>
+    </select><br><br>
+    <input type="number" name="Payment" placeholder="Payment"><br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    const form = document.getElementById("attendanceForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbzluBnX4AKxc3MjFuaMkAaOUrNrsHdafZxbCvBfoNkbl6e-APgH2jfp6_Riru5pVAh8/exec", {
+          method: "POST",
+          body: JSON.stringify(data)
+        });
+        const text = await res.text();
+        document.getElementById("message").textContent = text;
+      } catch (err) {
+        document.getElementById("message").textContent = "❌ Error: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
